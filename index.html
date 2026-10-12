@@ -1,0 +1,323 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ТехЛайт · паспорт оборудования</title>
+<meta name="robots" content="noindex">
+<style>
+  :root {
+    --bg: #F7F6F2; --ink: #111111; --muted: #5C6066; --line: #CFCFCB; --soft: #E5E4DF;
+    --orange: #C2410C; --green: #1B6B3F; --red: #A11C24; --yellow: #9A6A00;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--bg); color: var(--ink);
+    font-family: "Roboto Condensed", "Arial Narrow", Roboto, Arial, sans-serif;
+  }
+  .wrap { max-width: 720px; margin: 0 auto; padding: 16px 16px 110px; }
+  .caps { font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); font-weight: 600; }
+  .brand { font-weight: 800; font-size: 18px; }
+  .brand b { color: var(--orange); }
+  .top { display: flex; justify-content: space-between; align-items: center; gap: 10px; }
+  .guest-tag { border: 1px solid var(--line); background: #fff; border-radius: 20px; padding: 4px 10px; font-size: 13px; color: var(--muted); }
+  h1 { font-size: 28px; line-height: 1.1; margin: 12px 0 8px; padding-top: 12px; border-top: 2px solid var(--ink); }
+  .badge { display: inline-flex; align-items: center; gap: 6px; padding: 3px 10px; border-radius: 20px; font-weight: 700; font-size: 14px; font-family: Roboto, Arial, sans-serif; }
+  .badge i { width: 9px; height: 9px; border-radius: 50%; display: inline-block; }
+  .box { background: #fff; border: 1px solid var(--line); border-radius: 6px; }
+  .dashed { border: 2px dashed var(--orange); border-radius: 6px; background: #fff; padding: 12px 14px; display: flex; justify-content: space-between; align-items: center; margin: 14px 0; }
+  .big { font-size: 26px; font-weight: 800; }
+  .tabs { display: flex; border-bottom: 1px solid var(--ink); margin-top: 8px; }
+  .tabs button { flex: 1; background: none; border: 0; border-bottom: 3px solid transparent; padding: 12px 4px; font: inherit; font-size: 14px; font-weight: 700; letter-spacing: .06em; color: var(--muted); cursor: pointer; }
+  .tabs button.on { color: var(--ink); border-bottom-color: var(--orange); }
+  table { width: 100%; border-collapse: collapse; font-family: Roboto, Arial, sans-serif; font-size: 15px; }
+  td { padding: 10px 12px; border-bottom: 1px solid var(--soft); vertical-align: top; }
+  td:first-child { color: var(--muted); width: 42%; }
+  tr:last-child td { border-bottom: 0; }
+  .rec { padding: 12px; border-bottom: 1px solid var(--soft); font-family: Roboto, Arial, sans-serif; }
+  .rec:last-child { border-bottom: 0; }
+  .rec .d { color: var(--muted); font-size: 13px; }
+  .tag { display: inline-block; border: 1.5px solid; padding: 1px 8px; font-size: 12px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; margin: 4px 0; font-family: "Roboto Condensed", Arial, sans-serif; }
+  .meta { color: var(--muted); font-size: 13px; margin-top: 2px; }
+  .empty { padding: 24px 12px; text-align: center; color: var(--muted); font-family: Roboto, Arial, sans-serif; }
+  .bar { position: fixed; left: 0; right: 0; bottom: 0; background: var(--bg); border-top: 2px solid var(--ink); }
+  .bar .in { max-width: 720px; margin: 0 auto; padding: 12px 16px; display: flex; gap: 10px; }
+  .btn { height: 52px; border-radius: 6px; font: inherit; font-size: 17px; font-weight: 700; cursor: pointer; padding: 0 12px; }
+  .btn.o { flex: 2; background: var(--orange); color: #fff; border: 0; }
+  .btn.r { flex: 1; background: #fff; color: var(--red); border: 1px solid var(--red); }
+  .btn:disabled { opacity: .5; }
+  .applink { display: block; text-align: center; margin: 10px 0 0; color: var(--orange); font-weight: 700; text-decoration: none; font-size: 15px; }
+  .note { font-family: Roboto, Arial, sans-serif; font-size: 13px; color: var(--muted); }
+  /* окно записи */
+  .modal { position: fixed; inset: 0; background: rgba(0,0,0,.45); display: none; align-items: flex-end; justify-content: center; z-index: 10; }
+  .modal.on { display: flex; }
+  .sheet { background: #fff; width: 100%; max-width: 720px; max-height: 92vh; overflow: auto; border-radius: 12px 12px 0 0; padding: 18px 16px 24px; }
+  .sheet h2 { margin: 0 0 12px; font-size: 22px; }
+  label { display: block; margin: 10px 0 4px; font-size: 13px; color: var(--muted); font-weight: 600; font-family: Roboto, Arial, sans-serif; }
+  input, select, textarea { width: 100%; font: 16px Roboto, Arial, sans-serif; padding: 12px; border: 1px solid var(--line); border-radius: 6px; background: #fff; color: var(--ink); }
+  input:focus, select:focus, textarea:focus { outline: 2px solid var(--orange); border-color: var(--orange); }
+  .types { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .types button { height: 46px; border: 1px solid var(--line); background: #fff; border-radius: 6px; font: inherit; font-size: 16px; font-weight: 700; cursor: pointer; }
+  .types button.on { background: var(--ink); color: #fff; border-color: var(--ink); }
+  .types button.bk.on { background: var(--red); border-color: var(--red); }
+  .row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .err { color: var(--red); font-family: Roboto, Arial, sans-serif; font-size: 14px; margin-top: 10px; }
+  .ok { color: var(--green); }
+  .center { text-align: center; padding: 60px 16px; font-family: Roboto, Arial, sans-serif; color: var(--muted); }
+</style>
+</head>
+<body>
+<div class="wrap" id="app"><div class="center">Загрузка…</div></div>
+
+<div class="bar" id="bar" style="display:none">
+  <div class="in">
+    <button class="btn r" onclick="openForm('breakdown')">Поломка</button>
+    <button class="btn o" onclick="openForm('maintenance')">+ Внести запись</button>
+  </div>
+</div>
+
+<div class="modal" id="modal" onclick="if(event.target===this)closeForm()">
+  <div class="sheet">
+    <h2 id="formTitle">Новая запись</h2>
+    <div class="note">Вы вносите запись как гость. Её увидит служба главного механика.</div>
+
+    <label>Вид работ</label>
+    <div class="types" id="types">
+      <button data-t="maintenance">Плановое ТО</button>
+      <button data-t="repair">Ремонт</button>
+      <button data-t="inspection">Осмотр</button>
+      <button data-t="breakdown" class="bk">Поломка</button>
+    </div>
+
+    <label>Узел</label>
+    <select id="f_unit">
+      <option value="">— не указан —</option>
+      <option>Коробка скоростей</option><option>Шпиндель</option><option>Главный привод</option>
+      <option>Суппорт</option><option>Электрика</option><option>Гидравлика</option>
+      <option>Система смазки</option><option>Другое</option>
+    </select>
+
+    <label>Что сделано / что случилось *</label>
+    <textarea id="f_desc" rows="3" placeholder="Например: замена ремня главного привода"></textarea>
+
+    <label>Запчасти и материалы</label>
+    <input id="f_parts" placeholder="Ремень Б-2240">
+
+    <div class="row2">
+      <div><label>Простой, ч</label><input id="f_hours" type="number" min="0" step="0.5" placeholder="0"></div>
+      <div><label>Дата</label><input id="f_date" type="date"></div>
+    </div>
+
+    <label>Комментарий</label>
+    <textarea id="f_comment" rows="2"></textarea>
+
+    <label>Ваше ФИО *</label>
+    <input id="f_name" placeholder="Сидоров А.В." autocomplete="name">
+    <label>Организация *</label>
+    <input id="f_company" placeholder="ООО «СервисСтанок»" autocomplete="organization">
+    <label>Телефон *</label>
+    <input id="f_phone" type="tel" placeholder="+7 900 000-00-00" autocomplete="tel">
+    <label>PIN-код предприятия * <span style="font-weight:400">(спросите у главного механика)</span></label>
+    <input id="f_pin" type="password" inputmode="numeric" autocomplete="off">
+
+    <div class="err" id="formErr"></div>
+    <div style="display:flex;gap:10px;margin-top:16px">
+      <button class="btn r" style="color:var(--ink);border-color:var(--line)" onclick="closeForm()">Отмена</button>
+      <button class="btn o" id="saveBtn" onclick="save()">Сохранить запись</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ===== Настройки =====
+const SUPABASE_URL = 'https://ibxosqscqlsztstxhqnv.supabase.co';
+const PUBLIC_KEY = 'sb_publishable_YArztSMahzOBaRl_-BGB-A_-jgn1lhn';
+const FN = SUPABASE_URL + '/functions/v1/guest';
+
+const TYPE = {
+  maintenance: { label: 'Плановое ТО', color: 'var(--green)' },
+  repair:      { label: 'Ремонт',      color: 'var(--ink)' },
+  inspection:  { label: 'Осмотр',      color: 'var(--muted)' },
+  breakdown:   { label: 'Поломка',     color: 'var(--red)' },
+};
+
+const id = new URLSearchParams(location.search).get('id') || '';
+let data = null, tab = 'passport', formType = 'maintenance';
+
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const two = n => String(n).padStart(2, '0');
+const fmt = d => `${two(d.getDate())}.${two(d.getMonth() + 1)}.${d.getFullYear()}`;
+const parseDate = s => { const [y, m, d] = String(s).slice(0, 10).split('-').map(Number); return new Date(y, m - 1, d); };
+const today = () => { const d = new Date(); d.setHours(0, 0, 0, 0); return d; };
+
+async function call(body) {
+  const res = await fetch(FN, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'apikey': PUBLIC_KEY },
+    body: JSON.stringify({ id, ...body }),
+  });
+  const json = await res.json().catch(() => ({}));
+  if (!res.ok || json.error) throw new Error(json.error || ('Ошибка сервера ' + res.status));
+  return json;
+}
+
+function status(eq, records) {
+  if (eq.state === 'repair') return { label: 'В ремонте', color: 'var(--red)' };
+  const last = records.find(r => r.type === 'maintenance');
+  if (!last) return { label: 'Нужно ТО', color: 'var(--yellow)' };
+  const next = parseDate(last.date); next.setDate(next.getDate() + (eq.interval_days || 180));
+  if (next < today()) return { label: 'ТО просрочено', color: 'var(--yellow)' };
+  return { label: 'Работает', color: 'var(--green)' };
+}
+
+function nextService(eq, records) {
+  const last = records.find(r => r.type === 'maintenance');
+  if (!last || eq.state === 'repair') return null;
+  const next = parseDate(last.date); next.setDate(next.getDate() + (eq.interval_days || 180));
+  return next;
+}
+
+async function load() {
+  const app = document.getElementById('app');
+  if (!id) {
+    app.innerHTML = '<div class="center"><div class="brand">Тех<b>Лайт</b></div><p>Отсканируйте QR-код на корпусе оборудования.</p></div>';
+    return;
+  }
+  try {
+    data = await call({ action: 'get' });
+    render();
+  } catch (e) {
+    app.innerHTML = `<div class="center"><div class="brand">Тех<b>Лайт</b></div><p>${esc(e.message)}</p></div>`;
+  }
+}
+
+function render() {
+  const { equipment: eq, records, guest_enabled, plant_name } = data;
+  const st = status(eq, records);
+  const next = nextService(eq, records);
+  const days = next ? Math.round((next - today()) / 86400000) : null;
+
+  const rows = [
+    ['Инв. номер', eq.inventory_number],
+    ['Тип', eq.templates?.title],
+    ['Модель', eq.model],
+    ['Цех', eq.workshop],
+    ['Место установки', eq.location],
+    ['Изготовитель', eq.manufacturer],
+    ['Заводской №', eq.serial_number],
+    ['Год выпуска', eq.year],
+    ['Ответственный', eq.responsible],
+    ['Периодичность ТО', eq.interval_days ? `раз в ${eq.interval_days} дн.` : ''],
+    ...Object.entries(eq.values || {}),
+  ].filter(([, v]) => v !== null && v !== undefined && String(v).trim() !== '');
+
+  const docs = eq.documents || [];
+
+  let body = '';
+  if (tab === 'passport') {
+    body = `<div class="box"><table>${rows.map(([k, v]) => `<tr><td>${esc(k)}</td><td><b>${esc(v)}</b></td></tr>`).join('')}</table></div>`;
+  } else if (tab === 'history') {
+    body = records.length ? `<div class="box">${records.map(r => {
+      const t = TYPE[r.type] || TYPE.inspection;
+      const meta = [r.master, r.unit, Number(r.downtime_hours) > 0 ? `простой ${r.downtime_hours} ч` : ''].filter(Boolean).join(' · ');
+      return `<div class="rec">
+        <div class="d">${fmt(parseDate(r.date))}</div>
+        <span class="tag" style="color:${t.color};border-color:${t.color}">${t.label}</span>
+        <div>${esc(r.description)}</div>
+        ${r.parts ? `<div class="meta">Запчасти: ${esc(r.parts)}</div>` : ''}
+        ${r.comment ? `<div class="meta">Комментарий: ${esc(r.comment)}</div>` : ''}
+        ${meta ? `<div class="meta">${esc(meta)}</div>` : ''}
+      </div>`;
+    }).join('')}</div>` : '<div class="box empty">Записей пока нет</div>';
+  } else {
+    body = docs.length
+      ? `<div class="box">${docs.map(d => `<div class="rec"><b>${esc(d.name)}</b> <span class="tag" style="color:var(--orange);border-color:var(--orange)">${esc(d.ext)}</span></div>`).join('')}</div>`
+      : '<div class="box empty">Документов пока нет</div>';
+  }
+
+  document.getElementById('app').innerHTML = `
+    <div class="top">
+      <div>
+        <div class="brand">Тех<b>Лайт</b></div>
+        ${plant_name ? `<div class="caps">${esc(plant_name)}</div>` : ''}
+      </div>
+      <span class="guest-tag">Гостевой доступ</span>
+    </div>
+    <div class="caps" style="margin-top:14px">Паспорт оборудования № ${esc(eq.inventory_number)}</div>
+    <h1>${esc(eq.name)} ${esc(eq.model)}</h1>
+    <span class="badge" style="color:${st.color};border:1px solid ${st.color}"><i style="background:${st.color}"></i>${st.label}</span>
+    ${next ? `<div class="dashed"><div><div class="caps">Следующее плановое ТО</div><div class="big">${fmt(next)}</div></div>
+      <div style="text-align:right"><div class="big" style="color:${days < 0 ? 'var(--yellow)' : 'var(--orange)'}">${Math.abs(days)}</div>
+      <div class="note">${days < 0 ? 'дней просрочено' : 'дней осталось'}</div></div></div>` : ''}
+    <div class="tabs">
+      <button class="${tab === 'passport' ? 'on' : ''}" onclick="setTab('passport')">ПАСПОРТ</button>
+      <button class="${tab === 'history' ? 'on' : ''}" onclick="setTab('history')">ИСТОРИЯ (${records.length})</button>
+      <button class="${tab === 'docs' ? 'on' : ''}" onclick="setTab('docs')">ДОКУМЕНТЫ</button>
+    </div>
+    <div style="margin-top:14px">${body}</div>
+    <a class="applink" href="techlight://e/${encodeURIComponent(id)}">Открыть в приложении ТехЛайт →</a>
+    ${guest_enabled ? '' : '<p class="note" style="text-align:center">Гостевые записи на этом предприятии отключены — доступен только просмотр.</p>'}
+  `;
+  document.getElementById('bar').style.display = guest_enabled ? 'block' : 'none';
+}
+
+function setTab(t) { tab = t; render(); }
+
+// ===== Форма записи =====
+function selectType(t) {
+  formType = t;
+  document.querySelectorAll('#types button').forEach(b => b.classList.toggle('on', b.dataset.t === t));
+}
+document.querySelectorAll('#types button').forEach(b => b.addEventListener('click', () => selectType(b.dataset.t)));
+
+function openForm(t) {
+  selectType(t);
+  document.getElementById('formTitle').textContent = t === 'breakdown' ? 'Сообщить о поломке' : 'Новая запись';
+  document.getElementById('f_date').value = new Date().toISOString().slice(0, 10);
+  document.getElementById('f_date').max = new Date().toISOString().slice(0, 10);
+  // помним данные гостя на этом телефоне
+  try {
+    const saved = JSON.parse(localStorage.getItem('techlight_guest') || '{}');
+    ['name', 'company', 'phone'].forEach(k => { if (saved[k]) document.getElementById('f_' + k).value = saved[k]; });
+    const pin = sessionStorage.getItem('techlight_pin'); if (pin) document.getElementById('f_pin').value = pin;
+  } catch (_) {}
+  document.getElementById('formErr').textContent = '';
+  document.getElementById('modal').classList.add('on');
+}
+function closeForm() { document.getElementById('modal').classList.remove('on'); }
+
+async function save() {
+  const v = k => document.getElementById('f_' + k).value.trim();
+  const err = document.getElementById('formErr');
+  if (!v('desc')) return err.textContent = 'Опишите, что сделано или что случилось';
+  if (!v('name') || !v('company') || !v('phone')) return err.textContent = 'Укажите ФИО, организацию и телефон';
+  if (!v('pin')) return err.textContent = 'Введите PIN-код предприятия';
+
+  const btn = document.getElementById('saveBtn');
+  btn.disabled = true; btn.textContent = 'Сохраняю…'; err.textContent = '';
+  try {
+    await call({
+      action: 'add_record', pin: v('pin'), type: formType, unit: v('unit'),
+      description: v('desc'), parts: v('parts'), downtime_hours: Number(v('hours').replace(',', '.')) || 0,
+      date: v('date'), comment: v('comment'),
+      guest_name: v('name'), guest_company: v('company'), guest_phone: v('phone'),
+    });
+    try {
+      localStorage.setItem('techlight_guest', JSON.stringify({ name: v('name'), company: v('company'), phone: v('phone') }));
+      sessionStorage.setItem('techlight_pin', v('pin'));
+    } catch (_) {}
+    ['desc', 'parts', 'hours', 'comment'].forEach(k => document.getElementById('f_' + k).value = '');
+    closeForm();
+    tab = 'history';
+    await load();
+  } catch (e) {
+    err.textContent = e.message;
+  } finally {
+    btn.disabled = false; btn.textContent = 'Сохранить запись';
+  }
+}
+
+load();
+</script>
+</body>
+</html>
